@@ -63,9 +63,10 @@ angular.module('lngErrorService', [
                             var Parent = elem.parents('.'+parentClass), 
                                 msgHtml = "<div class='form-error'>" + err.message + "</div>";
                             // @TODO test Parent.length as way to verify element(s) exist
-                            if(Parent)
+                            if(Parent.length) {
+                                Parent.addClass(parentErrorClass);
                                 Parent.append(msgHtml);
-                            else
+                            } else
                                 elem.parent().append(msgHtml);
                             // setup focus to clear error
                             elem.on('focus', function (ev) {
