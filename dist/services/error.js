@@ -4,9 +4,23 @@ angular.module('lngErrorService', [
     '$rootScope', '$xService', '$sce',
     function ($rootScope, $ex, $sce) {
         $ex.log("[module.service.Error]");
+
+        var parentClass = 'field';
+        var parentErrorClass = 'error';
+        var errorDetailClass=  'form-error';
+
         var Errors = {
             messages: function () {
                 return this.fields;
+            },
+            setFieldFrameClass: function(frameClass) {
+                parentClass = frameClass;
+            },
+            setFrameErrorClass: function(errorClass) {
+                parentErrorClass = errorClass;
+            },
+            setErrorDetailClass: function(errorClass) {
+                errorDetailClass = errorClass;
             },
             message: function (key) {
                 var me = this;
@@ -46,11 +60,21 @@ angular.module('lngErrorService', [
                         if (elem.length) {
                             // found element
                             $ex.log(elem, "Found error element");
-                            elem.parent().append("<div class='form-error'>" + err.message + "</div>");
+                            var Parent = elem.parents(parentClass), 
+                                msgHtml = "<div class='form-error'>" + err.message + "</div>";
+                            if(Parent)
+                                Parent.append(msgHtml);
+                            else
+                                elem.parent().append(msgHtml);
+                            // setup focus to clear error
                             elem.on('focus', function (ev) {
                                 $ex.log(arguments, 'Focus captured in Error listener!');
-                                var thisElem = angular.element(ev.target), Parent = thisElem.parent(), errorViews = Parent.find('.form-error');
+                                var thisElem = angular.element(ev.target), 
+                                    Parent = thisElem.parents(parentClass), 
+                                    errorViews = Parent.find('.form-error');
                                 $ex.log(Parent, 'Element parent');
+                                // remove error class from parent 
+                                Parent.removeClass(parentErrorClass);
                                 $ex.log(errorViews, 'Error views for `' + key + '`');
                                 angular.forEach(errorViews, function (div) {
                                     div.remove();
