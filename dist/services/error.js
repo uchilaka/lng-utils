@@ -49,6 +49,7 @@ angular.module('lngErrorService', [
             },
             fields: {},
             clear: function () {
+                // @TODO clear all fields at the same time
                 $rootScope.Errors.reset();
             },
             update: function (errors) {
