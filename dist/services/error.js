@@ -1,7 +1,7 @@
 angular.module('lngErrorService', [
     'lngX'
 ]).factory('$errorService', [
-    '$rootScope', '$extensionService', '$sce',
+    '$rootScope', '$xService', '$sce',
     function ($rootScope, $ex, $sce) {
         $ex.log("[module.service.Error]");
         var Errors = {
