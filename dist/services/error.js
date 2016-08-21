@@ -60,8 +60,9 @@ angular.module('lngErrorService', [
                         if (elem.length) {
                             // found element
                             $ex.log(elem, "Found error element");
-                            var Parent = elem.parents(parentClass), 
+                            var Parent = elem.parents('.'+parentClass), 
                                 msgHtml = "<div class='form-error'>" + err.message + "</div>";
+                            // @TODO test Parent.length as way to verify element(s) exist
                             if(Parent)
                                 Parent.append(msgHtml);
                             else
@@ -70,7 +71,7 @@ angular.module('lngErrorService', [
                             elem.on('focus', function (ev) {
                                 $ex.log(arguments, 'Focus captured in Error listener!');
                                 var thisElem = angular.element(ev.target), 
-                                    Parent = thisElem.parents(parentClass), 
+                                    Parent = thisElem.parents('.'+parentClass), 
                                     errorViews = Parent.find('.form-error');
                                 $ex.log(Parent, 'Element parent');
                                 // remove error class from parent 
