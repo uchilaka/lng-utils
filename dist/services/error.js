@@ -61,7 +61,7 @@ angular.module('lngErrorService', [
                             var ErrorDiv = Parent.find('.form-error');
                             if(ErrorDiv.length) {
                                 console.log('Found error to reset -> ', ErrorDiv);
-                            }
+                            } 
                         }
                     }
                 });
