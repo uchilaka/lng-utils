@@ -61,7 +61,12 @@ angular.module('lngErrorService', [
                             var ErrorDiv = Parent.find('.form-error');
                             if(ErrorDiv.length) {
                                 console.log('Found error to reset -> ', ErrorDiv);
-                                Parent.removeChild(ErrorDiv);
+                                //Parent.removeChild(ErrorDiv);
+                                try {
+                                    ErrorDiv.remove();
+                                } catch(err) {
+                                    console.error('Error div clearing failed');
+                                }
                             } 
                         }
                     }
