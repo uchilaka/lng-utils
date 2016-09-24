@@ -7,19 +7,19 @@ angular.module('lngErrorService', [
 
         var parentClass = 'field';
         var parentErrorClass = 'error';
-        var errorDetailClass=  'form-error';
+        var errorDetailClass = 'form-error';
 
         var Errors = {
             messages: function () {
                 return this.fields;
             },
-            setFieldFrameClass: function(frameClass) {
+            setFieldFrameClass: function (frameClass) {
                 parentClass = frameClass;
             },
-            setFrameErrorClass: function(errorClass) {
+            setFrameErrorClass: function (errorClass) {
                 parentErrorClass = errorClass;
             },
-            setErrorDetailClass: function(errorClass) {
+            setErrorDetailClass: function (errorClass) {
                 errorDetailClass = errorClass;
             },
             message: function (key) {
@@ -50,7 +50,22 @@ angular.module('lngErrorService', [
             fields: {},
             clear: function () {
                 // @TODO clear all fields at the same time
-                $rootScope.Errors.reset();
+                angular.forEach(Errors.fields, function (err, key) {
+                    var elem = angular.element("[name='" + key + "']");
+                    if (elem.length) {
+                        // found element
+                        $ex.log(elem, "Found error element");
+                        var Parent = elem.parents('.' + parentClass);
+                        // @TODO test Parent.length as way to verify element(s) exist
+                        if (Parent.length) {
+                            var ErrorDiv = Parent.find('.form-error');
+                            if(ErrorDiv.length) {
+                                console.log('Found error to reset -> ', ErrorDiv);
+                            }
+                        }
+                    }
+                });
+                //$rootScope.Errors.reset();
             },
             update: function (errors) {
                 if (angular.isObject(errors)) {
@@ -61,10 +76,10 @@ angular.module('lngErrorService', [
                         if (elem.length) {
                             // found element
                             $ex.log(elem, "Found error element");
-                            var Parent = elem.parents('.'+parentClass), 
+                            var Parent = elem.parents('.' + parentClass),
                                 msgHtml = "<div class='form-error'>" + err.message + "</div>";
                             // @TODO test Parent.length as way to verify element(s) exist
-                            if(Parent.length) {
+                            if (Parent.length) {
                                 Parent.addClass(parentErrorClass);
                                 Parent.append(msgHtml);
                             } else
@@ -72,8 +87,8 @@ angular.module('lngErrorService', [
                             // setup focus to clear error
                             elem.on('focus', function (ev) {
                                 $ex.log(arguments, 'Focus captured in Error listener!');
-                                var thisElem = angular.element(ev.target), 
-                                    Parent = thisElem.parents('.'+parentClass), 
+                                var thisElem = angular.element(ev.target),
+                                    Parent = thisElem.parents('.' + parentClass),
                                     errorViews = Parent.find('.form-error');
                                 $ex.log(Parent, 'Element parent');
                                 // remove error class from parent 
