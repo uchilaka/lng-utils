@@ -1,0 +1,25 @@
+{
+  "name": "lng-utils",
+  "version": "1.0.0",
+  "description": "angular js utility for larcity javascript apps and front-ends",
+  "main": "index.js",
+  "dependencies": {
+    "minifier": "^0.8.1"
+  },
+  "devDependencies": {
+    "minifier": "^0.8.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uchilaka/lng-utils.git"
+  },
+  "author": "Uche Chilaka <uche@larcity.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uchilaka/lng-utils/issues"
+  },
+  "homepage": "https://github.com/uchilaka/lng-utils#readme"
+}
