@@ -98,10 +98,10 @@ angular.module("lng-services", [
             });
         }
     ])
-    .factory('$demoShieldService', [
+    .factory('$accessShieldService', [
         '$rootScope', '$authService', '$location',
         function ($s, $auth, $location) {
-            console.log('[$demoShieldService]');
+            console.log('[$accessShieldService]');
 
             var _ = {
                 requireAuthorization: function (scopes) {
@@ -125,8 +125,8 @@ angular.module("lng-services", [
         }
     ])
     // this is an alias for $demoShieldService
-    .factory('$demoShield', function ($demoShieldService) {
-        return $demoShieldService;
+    .factory('$demoShield', function ($accessShieldService) {
+        return $accessShieldService;
     })
     .factory('$dependencyManager', [
         '$rootScope', 'uuid', '$timeout',
