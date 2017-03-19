@@ -11,11 +11,11 @@ function newline() {
 echo "/$STARS angular-uuid.js $STARS/" > $SALIBFILE
 cat ./bower_components/angular-uuids/angular-uuid.js >> $SALIBFILE
 newline >> $SALIBFILE
-echo "/$STARS constants.js $STARS/" >> $SALIBFILE
-cat ./dist/constants.js >> $SALIBFILE
-newline >> $SALIBFILE
 echo "/$STARS http-auth-interceptor.js $STARS/" >> $SALIBFILE
 cat ./dist/services/http-auth-interceptor.js >> $SALIBFILE
+newline >> $SALIBFILE
+echo "/$STARS constants.js $STARS/" >> $SALIBFILE
+cat ./dist/constants.js >> $SALIBFILE
 newline >> $SALIBFILE
 echo "/$STARS larcity.js $STARS/" >> $SALIBFILE
 cat ./dist/larcity.js >> $SALIBFILE
