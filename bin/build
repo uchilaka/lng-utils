@@ -1,0 +1,32 @@
+#!/bin/bash
+## Make appkit standalone (all included) library
+export SALIBFILE="./dist/larcitykit.js"
+export STARS="***********************"
+function newline() {
+    echo ""
+    echo ""
+    echo ""
+}
+# This first line should replace the current contents of the file
+echo "/$STARS angular-uuid.js $STARS/" > $SALIBFILE
+cat ./bower_components/angular-uuids/angular-uuid.js >> $SALIBFILE
+newline >> $SALIBFILE
+echo "/$STARS constants.js $STARS/" >> $SALIBFILE
+cat ./dist/constants.js >> $SALIBFILE
+newline >> $SALIBFILE
+echo "/$STARS auth-interceptor.js $STARS/" >> $SALIBFILE
+cat ./dist/services/http-auth-interceptor.js >> $SALIBFILE
+newline >> $SALIBFILE
+echo "/$STARS larcity.js $STARS/" >> $SALIBFILE
+cat ./dist/larcity.js >> $SALIBFILE
+newline >> $SALIBFILE
+echo "/$STARS ng-larcity-standalone.js $STARS/" >> $SALIBFILE
+cat ./dist/ng-larcity-standalone.js >> $SALIBFILE
+echo "/$STARS shared.js $STARS/" >> $SALIBFILE
+cat ./dist/services/shared.js >> $SALIBFILE
+newline >> $SALIBFILE
+echo "Minifying files..."
+minify ./dist/animations.css
+minify ./dist/dependency.css
+minify ./dist/larcitykit.js
+echo "Fini! created larcitykit library: $SALIBFILE"
