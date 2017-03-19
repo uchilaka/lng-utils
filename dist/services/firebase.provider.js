@@ -1,5 +1,5 @@
 angular.module('provider.firebase', [
-    'data.service'
+    'service.data'
 ])
     .provider('$firebaseService', function FirebaseServiceProvider() {
 
