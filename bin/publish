@@ -1,0 +1,15 @@
+#!/bin/bash
+#git branch -D latest
+#git checkout master \
+#&& git checkout --orphan latest \
+#&& git add -A \
+#&& git commit -m "Publishing latest branch" \
+#&& git push origin latest \
+#&& echo "Published latest branch successfully!"
+#git checkout master
+export SPACER="\n\r\n\r ====>"
+git checkout master
+git tag -d latest && echo "${SPACER}Deleted latest tag successfully"
+git push origin :refs/tags/latest && echo "${SPACER}Updated remote information for latest tag" &&\ 
+git tag -a latest -m "${SPACER}Updating the latest tag" &&\
+git push origin --tags && echo "${SPACER}Saved updated"
