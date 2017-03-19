@@ -13,9 +13,11 @@ function spacer() {
     echo $SPACER;
     echo "";
 } 
-
 git checkout master
-git tag -d latest && echo "$(spacer)Deleted latest tag successfully"
+git add -A
+git commit -m "Saving changes before publishing"
+git push origin master &&\
+git tag -d latest && echo "$(spacer)Deleted latest tag successfully" &&\
 git tag -a latest -m "$(spacer)Updating the latest tag" &&\
 git push origin :refs/tags/latest && echo "$(spacer)Updated remote information for latest tag" &&\
 git push origin --tags && echo "$(spacer)Saved updated"
