@@ -14,7 +14,7 @@ newline >> $SALIBFILE
 echo "/$STARS constants.js $STARS/" >> $SALIBFILE
 cat ./dist/constants.js >> $SALIBFILE
 newline >> $SALIBFILE
-echo "/$STARS auth-interceptor.js $STARS/" >> $SALIBFILE
+echo "/$STARS http-auth-interceptor.js $STARS/" >> $SALIBFILE
 cat ./dist/services/http-auth-interceptor.js >> $SALIBFILE
 newline >> $SALIBFILE
 echo "/$STARS larcity.js $STARS/" >> $SALIBFILE
