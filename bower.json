@@ -1,0 +1,7 @@
+{
+  "name": "lng-utils",
+  "dependencies": {},
+  "devDependencies": {
+    "angular-uuids": "^0.0.4"
+  }
+}
