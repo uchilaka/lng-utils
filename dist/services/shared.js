@@ -1,6 +1,6 @@
 // Protect all demos requiring a gate login
 angular.module("lng-services", [
-    'data.service',
+    'service.data',
     'http-auth-interceptor',
     'ng-larcity-standalone',
     'angular-uuid'
