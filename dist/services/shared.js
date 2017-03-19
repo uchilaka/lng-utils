@@ -86,14 +86,14 @@ angular.module("lng-services", [
                         });
                         console.warn('Credentials -> %o', credentials);
                         $store.set('credentials', credentials);
-                        // load the default path and clear any query string params
+                        // @TODO load the default path and clear any query string params
                         $l.url($l.path('/tests'));
                         if (!$s.$$phase) $s.$apply();
                     }
                 });
             };
 
-            document.addEventListener('com:comenity:ready', function () {
+            document.addEventListener('com:larcity:ready', function () {
                 captureCredentialsIfProvided();
             });
         }

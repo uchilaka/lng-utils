@@ -561,7 +561,7 @@ angular.module('ng-larcity-standalone', [])
 
                 document.addEventListener('com:comenity:ready', function (event) {
                     _.ToolKit = event.detail;
-                    // expose public API aliases via  toolkit 
+                    // expose public API aliases via $larcity toolkit 
                     _.log = _.ToolKit.log;
                     _.info = _.ToolKit.info;
                     _.error = _.ToolKit.error;
@@ -655,68 +655,68 @@ angular.module("lng-services", [
         }
     ])
     .run([
-        '$rootScope', '', '$instanceStorage', '$location',
-        function ($s, , $store, $l) {
+        '$rootScope', '$larcity', '$instanceStorage', '$location',
+        function ($s, $larcity, $store, $l) {
 
-    var captureCredentialsIfProvided = function () {
-        return new Promise(function (resolve, reject) {
-            var credentials = $l.search();
-            //console.warn('Info -> %o', info);
-            /* // @TODO Might have to use this instead if IE tests don't work
-            var accessToken = .ToolKit.getQueryString('accessToken');
-            if (accessToken) {
-                var credentials = {
-                    accessToken: accessToken,
-                    timeCreated: parseInt(.ToolKit.getQueryString('timeCreated')),
-                    expiresInSeconds: parseInt(.ToolKit.getQueryString('expiresInSeconds'))
-                };
-            };
-            */
-            if (credentials && credentials.accessToken) {
-                'timeCreated,expiresInSeconds'.split(',').forEach(function (f) {
-                    if (credentials[f])
-                        credentials[f] = parseInt(credentials[f]);
+            var captureCredentialsIfProvided = function () {
+                return new Promise(function (resolve, reject) {
+                    var credentials = $l.search();
+                    //console.warn('Info -> %o', info);
+                    /* // @TODO Might have to use this instead if IE tests don't work
+                    var accessToken = $larcity.ToolKit.getQueryString('accessToken');
+                    if (accessToken) {
+                        var credentials = {
+                            accessToken: accessToken,
+                            timeCreated: parseInt($larcity.ToolKit.getQueryString('timeCreated')),
+                            expiresInSeconds: parseInt($larcity.ToolKit.getQueryString('expiresInSeconds'))
+                        };
+                    };
+                    */
+                    if (credentials && credentials.accessToken) {
+                        'timeCreated,expiresInSeconds'.split(',').forEach(function (f) {
+                            if (credentials[f])
+                                credentials[f] = parseInt(credentials[f]);
+                        });
+                        console.warn('Credentials -> %o', credentials);
+                        $store.set('credentials', credentials);
+                        // @TODO load the default path and clear any query string params
+                        $l.url($l.path('/tests'));
+                        if (!$s.$$phase) $s.$apply();
+                    }
                 });
-                console.warn('Credentials -> %o', credentials);
-                $store.set('credentials', credentials);
-                // load the default path and clear any query string params
-                $l.url($l.path('/tests'));
-                if (!$s.$$phase) $s.$apply();
-            }
-        });
-    };
+            };
 
-    document.addEventListener('com:comenity:ready', function () {
-        captureCredentialsIfProvided();
-    });
-}
+            document.addEventListener('com:larcity:ready', function () {
+                captureCredentialsIfProvided();
+            });
+        }
     ])
     .factory('$demoShieldService', [
-    '$rootScope', '$authService', '$location',
-    function ($s, $auth, $location) {
-        console.log('[$demoShieldService]');
+        '$rootScope', '$authService', '$location',
+        function ($s, $auth, $location) {
+            console.log('[$demoShieldService]');
 
-        var _ = {
-            requireAuthorization: function (scopes) {
-                $auth.isAuthorized(scopes || ['view'])
-                    .then(function () {
-                        console.info('Authorized');
-                    })
-                    .catch(function (err) {
-                        console.error('Not authorized: %s', err);
-                        // re-direct to login view
-                        $location.path('/login');
-                    });
-            }
-        };
+            var _ = {
+                requireAuthorization: function (scopes) {
+                    $auth.isAuthorized(scopes || ['view'])
+                        .then(function () {
+                            console.info('Authorized');
+                        })
+                        .catch(function (err) {
+                            console.error('Not authorized: %s', err);
+                            // re-direct to login view
+                            $location.path('/login');
+                        });
+                }
+            };
 
-        // Check to make sure user is authorized to view demo            
-        _.requireAuthorization();
+            // Check to make sure user is authorized to view demo            
+            _.requireAuthorization();
 
-        return _;
+            return _;
 
-    }
-])
+        }
+    ])
     // this is an alias for $demoShieldService
     .factory('$demoShield', function ($demoShieldService) {
         return $demoShieldService;
