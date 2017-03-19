@@ -62,20 +62,20 @@ angular.module("lng-services", [
         }
     ])
     .run([
-        '$rootScope', '$comenity', '$instanceStorage', '$location',
-        function ($s, $comenity, $store, $l) {
+        '$rootScope', '$larcity', '$instanceStorage', '$location',
+        function ($s, $larcity, $store, $l) {
 
             var captureCredentialsIfProvided = function () {
                 return new Promise(function (resolve, reject) {
                     var credentials = $l.search();
                     //console.warn('Info -> %o', info);
                     /* // @TODO Might have to use this instead if IE tests don't work
-                    var accessToken = $comenity.ToolKit.getQueryString('accessToken');
+                    var accessToken = $larcity.ToolKit.getQueryString('accessToken');
                     if (accessToken) {
                         var credentials = {
                             accessToken: accessToken,
-                            timeCreated: parseInt($comenity.ToolKit.getQueryString('timeCreated')),
-                            expiresInSeconds: parseInt($comenity.ToolKit.getQueryString('expiresInSeconds'))
+                            timeCreated: parseInt($larcity.ToolKit.getQueryString('timeCreated')),
+                            expiresInSeconds: parseInt($larcity.ToolKit.getQueryString('expiresInSeconds'))
                         };
                     };
                     */

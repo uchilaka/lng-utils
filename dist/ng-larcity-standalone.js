@@ -19,7 +19,7 @@ angular.module('ng-larcity-standalone', [])
 
                 document.addEventListener('com:comenity:ready', function (event) {
                     _.ToolKit = event.detail;
-                    // expose public API aliases via $comenity toolkit 
+                    // expose public API aliases via $larcity toolkit 
                     _.log = _.ToolKit.log;
                     _.info = _.ToolKit.info;
                     _.error = _.ToolKit.error;
