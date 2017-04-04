@@ -2,6 +2,20 @@ var LarCity = (function () {
     function LarCity() {
         var _this = this;
 
+        _this.Pathable = function (obj) {
+            if (typeof obj !== 'object') return;
+            // extend object         
+            obj.readPath = function (path) {
+                var obj = this;
+                if (!Array.isArray(path)) path = path.split('.');
+                for (var i = 0; i < path.length; i++) {
+                    obj = obj[path[i]];
+                }
+                return obj;
+            };
+            return obj;
+        };
+
         // @TODO replace with library        
         _this.isValidURL = function (textval) {
             var re = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
