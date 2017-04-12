@@ -36,9 +36,13 @@ angular.module('provider.firebase', [
                             console.error('Failed to locate and serve up provider object @ key [%s] - may not be available', name);
                         }
                     },
+                    // alias for database ref
+                    database: function () {
+                        return $firebase.Service.database();
+                    },
                     write: function (path, valueStruct, dataIsPrivate) {
                         // get current user
-                        var currentUser = $firebase.auth().currentUser;
+                        var currentUser = $firebase.Service.auth().currentUser;
                         if (!currentUser) {
                             console.error('No firebase user available! Aborting write to database.');
                             return;
@@ -47,7 +51,7 @@ angular.module('provider.firebase', [
                         var refPath = dataIsPrivate ? ['users', currentUser.uid, path].join('/') : (path || ['temp', 'sessions', currentUser.uid].join('/'));
                         console.warn('Starting save to path: %s', refPath);
                         // write back data update, and return promise
-                        return $firebase.database()
+                        return $firebase.Service.database()
                             .ref(refPath)
                             .set(valueStruct)
                             /*
@@ -60,7 +64,7 @@ angular.module('provider.firebase', [
                     saveFile: function (path, name, buffer) {
                         return new Promise(function (resolve, reject) {
                             // create root reference
-                            var storeRef = $firebase.storage().ref();
+                            var storeRef = $firebase.Service.storage().ref();
                             // create specific file reference 
                             var fileRef = storeRef.child([path, name].join('/'));
                             var task = fileRef.put(buffer);
