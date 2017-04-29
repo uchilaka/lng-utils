@@ -50,14 +50,6 @@
             console.log(rejection);
             /** @TODO handle no connection **/
             /** @TODO check origin domain of 401 error **/
-            /*
-            if (rejection.status === 401) {
-              var deferred = $q.defer();
-              httpBuffer.append(rejection.config, deferred);
-              $rootScope.$emit('app:auth-loginRequired', rejection);
-              return deferred.promise;
-            }
-            */
             switch (rejection.status) {
               case 401:
                 var deferred = $q.defer();
