@@ -60,7 +60,8 @@
               default:
                 var deferred = $q.defer();
                 httpBuffer.append(rejection.config, deferred);
-                var eventName = 'app:auth-intercepted' + (rejection.status || '');
+                //var eventName = 'app:auth-intercepted' + (rejection.status ? ('-' + rejection.status) : '');
+                var eventName = 'app:auth-intercepted';
                 $rootScope.$emit(eventName, rejection);
                 return deferred.promise;
             }
