@@ -5,6 +5,7 @@
  * (c) 2012 Witold Szczerba
  * License: MIT
  */
+
 (function () {
   'use strict';
 
@@ -15,24 +16,27 @@
         /**
          * Call this function to indicate that authentication was successfull and trigger a
          * retry of all deferred requests.
-         * @param data an optional argument to pass on to $emit which may be useful for
+         * @param data an optional argument to pass on to $broadcast which may be useful for
          * example if you need to pass through details of the user that was logged in
+         * @param configUpdater an optional transformation function that can modify the
+         * requests that are retried after having logged in.  This can be used for example
+         * to add an authentication token.  It must return the request.
          */
         loginConfirmed: function (data, configUpdater) {
           var updater = configUpdater || function (config) { return config; };
-          $rootScope.$emit('app:auth-loginConfirmed', data);
+          $rootScope.$broadcast('app:auth-loginConfirmed', data);
           httpBuffer.retryAll(updater);
         },
 
         /**
          * Call this function to indicate that authentication should not proceed.
          * All deferred requests will be abandoned or rejected (if reason is provided).
-         * @param data an optional argument to pass on to $emit.
+         * @param data an optional argument to pass on to $broadcast.
          * @param reason if provided, the requests are rejected; abandoned otherwise.
          */
         loginCancelled: function (data, reason) {
           httpBuffer.rejectAll(reason);
-          $rootScope.$emit('app:auth-loginCancelled', data);
+          $rootScope.$broadcast('app:auth-loginCancelled', data);
         }
       };
     }])
@@ -40,30 +44,27 @@
     /**
      * $http interceptor.
      * On 401 response (without 'ignoreAuthModule' option) stores the request
-     * and broadcasts 'app:angular-auth-loginRequired'.
+     * and broadcasts 'event:auth-loginRequired'.
+     * On 403 response (without 'ignoreAuthModule' option) discards the request
+     * and broadcasts 'event:auth-forbidden'.
      */
     .config(['$httpProvider', function ($httpProvider) {
       $httpProvider.interceptors.push(['$rootScope', '$q', 'httpBuffer', function ($rootScope, $q, httpBuffer) {
         return {
           responseError: function (rejection) {
-            console.log("Rejection >>");
-            console.log(rejection);
-            /** @TODO handle no connection **/
-            /** @TODO check origin domain of 401 error **/
-            switch (rejection.status) {
-              case 401:
-                var deferred = $q.defer();
-                httpBuffer.append(rejection.config, deferred);
-                $rootScope.$emit('app:auth-loginRequired', rejection);
-                return deferred.promise;
-
-              case 403:
-                var deferred = $q.defer();
-                httpBuffer.append(rejection.config, deferred);
-                //var eventName = 'app:auth-intercepted' + (rejection.status ? ('-' + rejection.status) : '');
-                var eventName = 'app:auth-accessForbidden';
-                $rootScope.$emit(eventName, rejection);
-                return deferred.promise;
+            var config = rejection.config || {};
+            if (!config.ignoreAuthModule) {
+              switch (rejection.status) {
+                case 401:
+                  var deferred = $q.defer();
+                  var bufferLength = httpBuffer.append(config, deferred);
+                  if (bufferLength === 1)
+                    $rootScope.$broadcast('app:auth-loginRequired', rejection);
+                  return deferred.promise;
+                case 403:
+                  $rootScope.$broadcast('app:auth-forbidden', rejection);
+                  break;
+              }
             }
             // otherwise, default behaviour
             return $q.reject(rejection);
@@ -98,9 +99,10 @@
       return {
         /**
          * Appends HTTP request configuration object with deferred response attached to buffer.
+         * @return {Number} The new length of the buffer.
          */
         append: function (config, deferred) {
-          buffer.push({
+          return buffer.push({
             config: config,
             deferred: deferred
           });
@@ -123,10 +125,17 @@
          */
         retryAll: function (updater) {
           for (var i = 0; i < buffer.length; ++i) {
-            retryHttpRequest(updater(buffer[i].config), buffer[i].deferred);
+            var _cfg = updater(buffer[i].config);
+            if (_cfg !== false)
+              retryHttpRequest(_cfg, buffer[i].deferred);
           }
           buffer = [];
         }
       };
     }]);
 })();
+
+/* commonjs package manager support (eg componentjs) */
+if (typeof module !== "undefined" && typeof exports !== "undefined" && module.exports === exports) {
+  module.exports = 'http-auth-interceptor';
+}

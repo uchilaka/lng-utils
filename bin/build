@@ -8,11 +8,13 @@ function newline() {
     echo ""
 }
 # This first line should replace the current contents of the file
-echo "/$STARS angular-uuid.js $STARS/" > $SALIBFILE
+echo "/$STARS Bower -> angular-uuids $STARS/" > $SALIBFILE
 cat ./bower_components/angular-uuids/angular-uuid.js >> $SALIBFILE
 newline >> $SALIBFILE
 echo "/$STARS http-auth-interceptor.js $STARS/" >> $SALIBFILE
 cat ./dist/services/http-auth-interceptor.js >> $SALIBFILE
+#echo "/$STARS Bower -> angular-http-auth $STARS/" >> $SALIBFILE
+#cat ./bower_components/angular-http-auth/dist/http-auth-interceptor.js >> $SALIBFILE
 newline >> $SALIBFILE
 echo "/$STARS constants.js $STARS/" >> $SALIBFILE
 cat ./dist/constants.js >> $SALIBFILE
