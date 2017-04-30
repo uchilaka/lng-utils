@@ -312,10 +312,11 @@ if (typeof module !== 'undefined' && module.exports) {
                 $rootScope.$emit('app:auth-loginRequired', rejection);
                 return deferred.promise;
 
-              default:
+              case 403:
                 var deferred = $q.defer();
                 httpBuffer.append(rejection.config, deferred);
-                var eventName = 'app:auth-intercepted' + (rejection.status || '');
+                //var eventName = 'app:auth-intercepted' + (rejection.status ? ('-' + rejection.status) : '');
+                var eventName = 'app:auth-accessForbidden';
                 $rootScope.$emit(eventName, rejection);
                 return deferred.promise;
             }
